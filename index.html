@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>세상을 꼬집는 한 마디 - 현대판 사설시조 창작소</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts for Traditional Korean feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['"Gowun Batang"', 'Georgia', 'serif'],
+          },
+          colors: {
+            hanji: '#FAF7F2',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAF7F2;
+      font-family: 'Inter', sans-serif;
+    }
+    .font-serif-kr {
+      font-family: 'Gowun Batang', Georgia, serif;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1ebd9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c2b396;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #918165;
+    }
+  </style>
+</head>
+<body class="text-stone-800 min-h-screen selection:bg-amber-200 pb-16">
+
+  <!-- App Container -->
+  <div id="app">
+    <!-- Header -->
+    <header class="sticky top-0 z-30 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-amber-200/80 shadow-xs">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center space-x-3">
+          <div>
+            <h1 class="text-xl md:text-2xl font-bold font-serif-kr text-amber-950 tracking-tight flex items-center gap-2">
+              세상을 꼬집는 한 마디
+              <span class="text-xs font-sans font-normal px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+                현대판 사설시조 창작소
+              </span>
+            </h1>
+            <p class="text-xs text-stone-600 hidden sm:block mt-0.5">
+              실시간 학급 갤러리와 HWP 문서 자동 다운로드 연동 국어 교실
+            </p>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center bg-amber-200/50 p-1 rounded-xl border border-amber-300/80 shadow-xs">
+            <button
+              id="tab-btn-create"
+              onclick="switchTab('create')"
+              class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 bg-amber-900 text-amber-50 shadow-xs"
+            >
+              <i data-lucide="feather" class="w-3.5 h-3.5"></i>
+              <span>시조 창작소</span>
+            </button>
+            <button
+              id="tab-btn-media"
+              onclick="switchTab('media')"
+              class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 text-amber-950 hover:bg-amber-300/50"
+            >
+              <i data-lucide="film" class="w-3.5 h-3.5"></i>
+              <span>풍자 미디어 탐구관</span>
+            </button>
+          </div>
+
+          <button
+            onclick="openGuideModal()"
+            class="flex items-center gap-1.5 px-3 py-1.5 text-xs md:text-sm font-medium bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg border border-amber-300 transition-colors shadow-xs cursor-pointer"
+          >
+            <i data-lucide="help-circle" class="w-4 h-4 text-amber-700"></i>
+            <span class="hidden sm:inline">작성 가이드</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6">
+
+      <!-- TAB 1: CREATE & GALLERY SECTION -->
+      <div id="tab-content-create" class="space-y-8">
+
+        <!-- Submission Success Banner -->
+        <div id="success-banner" class="hidden p-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-md">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-emerald-500 text-white rounded-xl">
+              <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-emerald-950">
+                🎉 사설시조 제출 및 HWP 다운로드 완료!
+              </h3>
+              <p id="success-banner-msg" class="text-xs text-emerald-800 mt-0.5">
+                작성한 작품이 공유 갤러리에 저장되었으며, HWP 파일이 다운로드되었습니다.
+              </p>
+            </div>
+          </div>
+          <button onclick="closeSuccessBanner()" class="p-1 text-emerald-700 hover:text-emerald-900 rounded-lg">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Step 1: Theme Selection -->
+        <section class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold font-serif-kr text-amber-950 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-700"></i>
+              1단계: 풍자 주제 및 소재 선택하기
+            </h2>
+            <span class="text-xs text-stone-500 hidden sm:inline">원하는 주제를 클릭하면 예시 힌트가 자동 채워집니다.</span>
+          </div>
+
+          <div id="theme-cards-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+            <!-- Theme cards will be rendered dynamically by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Step 2: Creation Form -->
+        <section class="bg-white rounded-3xl p-5 md:p-7 border border-amber-200/80 shadow-sm space-y-5">
+          <div class="border-b border-stone-100 pb-3 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <i data-lucide="pencil" class="w-5 h-5 text-amber-800"></i>
+              <h2 class="text-lg font-serif-kr font-bold text-amber-950">
+                2단계: 사설시조 작성하기
+              </h2>
+            </div>
+            <span id="selected-theme-badge" class="text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-medium">
+              시험기간 자기합리화
+            </span>
+          </div>
+
+          <form id="sijo-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-stone-800 mb-1">
+                  작성자 학번 및 이름 <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="form-author"
+                  required
+                  placeholder="예: 20101_홍길동"
+                  class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:outline-none bg-stone-50/50"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-stone-800 mb-1">
+                  풍자 제목 / 주제명 <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="form-theme-title"
+                  required
+                  class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:outline-none bg-stone-50/50"
+                />
+              </div>
+            </div>
+
+            <!-- Chojang -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-stone-900 flex items-center justify-between">
+                <span>[초장] 겉으로 내세우는 정당한 명분 또는 시작 상황</span>
+                <span class="text-[11px] font-normal text-stone-500">평시조 형태(3·4·3·4조)의 짧은 구절</span>
+              </label>
+              <input
+                type="text"
+                id="form-chojang"
+                required
+                placeholder="초장 구절을 작성하세요"
+                class="w-full text-xs md:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:outline-none font-serif-kr"
+              />
+            </div>
+
+            <!-- Jungjang -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-stone-900 flex items-center justify-between">
+                <span>[중장] 현실의 불합리하고 과장된 행동들의 길고 유쾌한 열거</span>
+                <span class="text-[11px] font-normal text-amber-800 font-bold">★ 사설시조의 핵심 (길이가 매우 길어짐)</span>
+              </label>
+              <textarea
+                id="form-jungjang"
+                rows="3"
+                required
+                placeholder="모순되는 행동이나 현실의 속사정을 구체적이고 길게 늘어놓으세요"
+                class="w-full text-xs md:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:outline-none font-serif-kr leading-relaxed"
+              ></textarea>
+            </div>
+
+            <!-- Jongjang -->
+            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 space-y-3">
+              <div class="flex items-center justify-between">
+                <label class="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+                  <span>[종장] 반전 및 뻔뻔한 자기합리화</span>
+                  <span class="text-[11px] text-rose-600 font-bold">(첫 3글자 필수!)</span>
+                </label>
+                <span id="jongjang-valid-badge" class="text-xs px-2.5 py-0.5 rounded-full font-bold border bg-rose-100 text-rose-800 border-rose-300">
+                  0글자 (정확히 3글자 작성 필요)
+                </span>
+              </div>
+
+              <!-- Starter Chips -->
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-[11px] text-stone-600 font-medium">추천 3글자 감탄어:</span>
+                <div id="starter-chips" class="flex flex-wrap items-center gap-1.5">
+                  <!-- Generated by JS -->
+                </div>
+              </div>
+
+              <div class="grid grid-cols-12 gap-2">
+                <input
+                  type="text"
+                  id="form-jongjang3"
+                  required
+                  maxLength="4"
+                  placeholder="아뿔싸"
+                  oninput="handleJongjang3Input()"
+                  class="col-span-4 sm:col-span-3 text-xs md:text-sm px-3 py-2.5 rounded-xl border text-center font-bold font-serif-kr focus:ring-2 focus:ring-amber-500 focus:outline-none border-stone-300 bg-white"
+                />
+                <input
+                  type="text"
+                  id="form-jongjang-rest"
+                  required
+                  placeholder="내일부터 다이어트하면 되니 오늘 밤 맛있게 먹으면 영 칼로리로다."
+                  class="col-span-8 sm:col-span-9 text-xs md:text-sm px-3.5 py-2.5 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 focus:outline-none font-serif-kr bg-white"
+                />
+              </div>
+            </div>
+
+            <!-- Submit Button Footer -->
+            <div class="pt-2 flex flex-wrap items-center justify-between gap-3">
+              <p class="text-xs text-stone-500 flex items-center gap-1">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-stone-400"></i>
+                작성한 사설시조는 학급 공유 갤러리에 등록되고 HWP로 다운로드됩니다.
+              </p>
+              <button
+                type="submit"
+                id="submit-btn"
+                class="px-6 py-3 rounded-2xl text-xs md:text-sm font-bold text-white bg-amber-900 hover:bg-amber-950 active:scale-98 shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:bg-stone-300 disabled:cursor-not-allowed"
+              >
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span>작품 제출 및 HWP 저장</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Step 3: Gallery -->
+        <section id="class-gallery" class="space-y-4 pt-4 border-t border-amber-200/80">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-serif-kr font-bold text-amber-950 flex items-center gap-2">
+                <i data-lucide="book-open" class="w-5 h-5 text-amber-800"></i>
+                3단계: 우리 학급 사설시조 공유 갤러리
+              </h2>
+              <p class="text-xs text-stone-600 mt-0.5">
+                학급 친구들이 창작한 현대판 사설시조 작품을 감상하고 공감(좋아요)을 눌러보세요.
+              </p>
+            </div>
+
+            <!-- Theme Filter Buttons -->
+            <div id="filter-tabs" class="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Cards Grid -->
+          <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB 2: MEDIA EXPLORATION SECTION -->
+      <div id="tab-content-media" class="space-y-8 hidden">
+        <section class="bg-white rounded-3xl p-6 border border-amber-200/80 shadow-xs space-y-4">
+          <div class="flex items-center gap-2 border-b pb-3">
+            <i data-lucide="film" class="w-5 h-5 text-amber-800"></i>
+            <h2 class="text-lg font-serif-kr font-bold text-amber-950">
+              사설시조 풍자 미디어 해설 영상
+            </h2>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            조선 후기 민중들의 솔직한 표현 양식이었던 사설시조와 현대의 사회적 모순을 짚어내는 풍자의 요소를 영상 강의로 학습해보세요.
+          </p>
+
+          <div id="video-cards-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <!-- Video cards generated by JS -->
+          </div>
+        </section>
+
+        <!-- Concept Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-amber-50/80 p-5 rounded-2xl border border-amber-200 space-y-2">
+            <h3 class="text-xs font-bold text-amber-950 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-700"></i>
+              풍자(諷刺) vs 해학(諧謔)
+            </h3>
+            <p class="text-xs text-stone-700 leading-relaxed">
+              <strong>풍자</strong>는 비판 대상의 모순을 공격적이고 날카롭게 찌르는 웃음이며, <strong>해학</strong>은 연민과 따뜻함이 담긴 부드러운 웃음입니다. 사설시조는 두 요소를 함께 사용하여 재미를 극대화합니다.
+            </p>
+          </div>
+
+          <div class="bg-emerald-50/80 p-5 rounded-2xl border border-emerald-200 space-y-2">
+            <h3 class="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
+              <i data-lucide="award" class="w-4 h-4 text-emerald-700"></i>
+              종장 첫 3글자의 철칙
+            </h3>
+            <p class="text-xs text-stone-700 leading-relaxed">
+              평시조든 사설시조든 <strong>종장의 첫 음보(첫 마디)는 반드시 3글자</strong>여야 합니다. 이 규칙은 길어졌던 중장의 긴장감을 단숨에 수습하고 시상을 선명하게 반전시키는 역할을 합니다.
+            </p>
+          </div>
+
+          <div class="bg-rose-50/80 p-5 rounded-2xl border border-rose-200 space-y-2">
+            <h3 class="text-xs font-bold text-rose-950 flex items-center gap-1.5">
+              <i data-lucide="layers" class="w-4 h-4 text-rose-700"></i>
+              현대판 사설시조의 묘미
+            </h3>
+            <p class="text-xs text-stone-700 leading-relaxed">
+              시험기간 딴짓, 다이어트 실패, SNS 자랑 등 현대인의 모순된 행동을 사설시조의 길고 장황한 중장 열거로 표현함으로써 현대판 해학과 자기 풍자를 만들어냅니다.
+            </p>
+          </div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODALS CONTAINER -->
+
+  <!-- Video Player Modal -->
+  <div id="video-modal" class="fixed inset-0 z-50 bg-stone-900/80 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-3xl w-full p-4 space-y-3 shadow-2xl border border-stone-200">
+      <div class="flex items-center justify-between border-b pb-2">
+        <h3 id="video-modal-title" class="text-sm font-bold font-serif-kr text-stone-900 line-clamp-1">
+          🎬 영상 플레이어
+        </h3>
+        <button onclick="closeVideoModal()" class="text-stone-400 hover:text-stone-700 p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="relative aspect-video rounded-xl overflow-hidden bg-black">
+        <iframe
+          id="video-modal-iframe"
+          class="w-full h-full"
+          src=""
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guide Modal -->
+  <div id="guide-modal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl border border-stone-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="text-lg font-serif-kr font-bold text-amber-950 flex items-center gap-2">
+          <i data-lucide="book-open" class="w-5 h-5 text-amber-800"></i>
+          사설시조 창작 교실 가이드
+        </h3>
+        <button onclick="closeGuideModal()" class="text-stone-400 hover:text-stone-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs md:text-sm text-stone-700 leading-relaxed">
+        <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200">
+          <h4 class="font-bold text-amber-900 mb-1">💡 사설시조란?</h4>
+          <p>
+            조선 후기 평민들이 즐겨 부른 시조로, 초장-중장-종장의 3장 구조 중 <strong>중장이 길어지는 형태</strong>입니다. 일상의 모순과 불합리를 풍자하고 해학적으로 표현합니다.
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="font-bold text-stone-900">✍️ 3단계 작성 법칙</h4>
+          <ul class="space-y-1.5 list-disc list-inside text-stone-600">
+            <li><strong class="text-stone-800">초장:</strong> 명분이나 결심을 짧게 작성합니다 (3·4·3·4조 기본).</li>
+            <li><strong class="text-stone-800">중장:</strong> 실제 벌어지는 불합리한 행동들을 자유롭게 구체적으로 열거합니다.</li>
+            <li><strong class="text-stone-800">종장:</strong> <strong>첫 마디를 반드시 정확히 3글자</strong>로 시작하고 반전을 이끌어냅니다.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t flex justify-end">
+        <button
+          onclick="closeGuideModal()"
+          class="px-4 py-2 bg-amber-900 text-white text-xs font-bold rounded-xl hover:bg-amber-950 cursor-pointer"
+        >
+          이해했습니다!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div id="delete-modal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-stone-200 text-center">
+      <div class="w-12 h-12 bg-rose-100 text-rose-700 rounded-full flex items-center justify-center mx-auto">
+        <i data-lucide="trash-2" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-bold font-serif-kr text-stone-900">사설시조 작품 삭제</h3>
+        <p class="text-xs text-stone-600 mt-1">
+          이 작품을 학급 공유 갤러리에서 정말 삭제하시겠습니까?
+        </p>
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button
+          onclick="closeDeleteModal()"
+          class="flex-1 py-2 text-xs font-semibold bg-stone-100 text-stone-700 rounded-xl cursor-pointer"
+        >
+          취소
+        </button>
+        <button
+          onclick="confirmDeletePost()"
+          class="flex-1 py-2 text-xs font-semibold bg-rose-700 text-white rounded-xl shadow-xs cursor-pointer"
+        >
+          삭제하기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl border border-stone-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="text-lg font-serif-kr font-bold text-amber-950 flex items-center gap-2">
+          <i data-lucide="pencil" class="w-5 h-5 text-amber-800"></i>
+          사설시조 작품 수정
+        </h3>
+        <button onclick="closeEditModal()" class="text-stone-400 hover:text-stone-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="edit-form" onsubmit="handleSaveEdit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">풍자 주제</label>
+          <input
+            type="text"
+            id="edit-theme-title"
+            required
+            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 bg-white"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">작성자 (학번 / 이름)</label>
+          <input
+            type="text"
+            id="edit-author"
+            required
+            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 bg-stone-50"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-800 mb-1">[초장] 명분/시작 상황</label>
+          <input
+            type="text"
+            id="edit-chojang"
+            required
+            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 font-serif-kr"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-800 mb-1">[중장] 현실 사설 내용</label>
+          <textarea
+            id="edit-jungjang"
+            rows="3"
+            required
+            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 font-serif-kr leading-relaxed"
+          ></textarea>
+        </div>
+
+        <div class="space-y-2 p-3 rounded-xl bg-amber-50/60 border border-amber-200">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-semibold text-amber-950">[종장] 반전 (첫 3글자 필수)</label>
+            <span id="edit-jongjang3-badge" class="text-xs font-medium text-emerald-700">
+              ✓ 3글자 확인
+            </span>
+          </div>
+          <div class="grid grid-cols-12 gap-2">
+            <input
+              type="text"
+              id="edit-jongjang3"
+              required
+              maxLength="4"
+              oninput="handleEditJongjang3Input()"
+              class="col-span-3 text-xs px-2 py-2 rounded-lg font-bold text-center border border-amber-300 bg-white font-serif-kr"
+            />
+            <input
+              type="text"
+              id="edit-jongjang-rest"
+              required
+              class="col-span-9 text-xs px-3 py-2 rounded-lg border border-stone-300 bg-white font-serif-kr"
+            />
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button
+            type="button"
+            onclick="closeEditModal()"
+            class="px-4 py-2 bg-stone-100 text-stone-700 text-xs font-semibold rounded-xl cursor-pointer"
+          >
+            취소
+          </button>
+          <button
+            type="submit"
+            id="edit-save-btn"
+            class="px-4 py-2 text-xs font-bold rounded-xl text-white bg-amber-900 hover:bg-amber-950 cursor-pointer"
+          >
+            수정 저장
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Theme Data Definition
+    const THEMES = [
+      {
+        id: 'exam',
+        title: '시험기간 자기합리화',
+        icon: 'clock',
+        badge: 'bg-amber-100 text-amber-800 border-amber-300',
+        hoverBg: 'hover:bg-amber-50 hover:border-amber-400',
+        activeBg: 'bg-amber-50 border-amber-500 ring-2 ring-amber-400',
+        description: '공부하겠다고 앉아 책상 정리, 딴짓 후 벼락치기로 합리화하는 현실',
+        chojangHint: '이번 시험은 미리 준비하여 백 점 받으리라 엄숙히 책상 앞에 앉았건만',
+        jungjangHint: '필통 정리부터 시작하여 책상 먼지 닦고 연필 깎고 십 년 전 다이어리 꺼내 읽다가 배고파 라면 끓여 먹고 졸려서 한 시간만 자야지 하고 눈떴더니 어느새 해가 번쩍 떠올라 교과서 한 장도 펼쳐보지 못한 채',
+        jongjang3Hint: '아마도',
+        jongjangRestHint: '벼락치기가 내 체질에 딱 맞으니 이제야 제대로 공부할 맛 나는구나.'
+      },
+      {
+        id: 'diet',
+        title: '다이어트',
+        icon: 'utensils',
+        badge: 'bg-orange-100 text-orange-800 border-orange-300',
+        hoverBg: 'hover:bg-orange-50 hover:border-orange-400',
+        activeBg: 'bg-orange-50 border-orange-500 ring-2 ring-orange-400',
+        description: '1일 다이어트 선언 후 밤 11시 배달 앱 떡볶이와 치킨 유혹에 무너지는 모순',
+        chojangHint: '오늘부터 일 일 다이어트 선언하고 저녁 샐러드 한 그릇으로 겨우 참았건만',
+        jungjangHint: '밤 열한 시 넘어가니 배에서 요란하게 꼬르륵 소리 나고 배달 앱 알고리즘이 추천하는 숯불 양념 치킨과 분모자 떡볶이 환상의 비주얼에 눈 뒤집혀 나도 모르게 쿠폰 적용해 결제 버튼 누르고 들뜬 마음으로 배달원을 기다리니',
+        jongjang3Hint: '어즈버',
+        jongjangRestHint: '내일부터 진짜 다이어트하면 되니 오늘 밤 맛있게 먹으면 영 칼로리로다.'
+      },
+      {
+        id: 'environment',
+        title: '환경문제',
+        icon: 'leaf',
+        badge: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+        hoverBg: 'hover:bg-emerald-50 hover:border-emerald-400',
+        activeBg: 'bg-emerald-50 border-emerald-500 ring-2 ring-emerald-400',
+        description: '환경을 보호한다면서 한정판 텀블러/에코백을 수십 개씩 모으는 모순',
+        chojangHint: '지구 온난화 위기라며 텀블러 하나 가슴에 품고 친환경 생활 다짐했건만',
+        jungjangHint: '계절마다 쏟아지는 한정판 굿즈 텀블러에 눈이 뒤집혀 분홍색, 민트색, 파스텔색 색색별로 모아 오고, 사은품 에코백까지 장롱 가득 사 쌓아 두어 정작 쓰지 않고 방치된 플라스틱과 스텐 컵이 수십 개라 썩지도 않는 쓰레기산을 새로 만드니',
+        jongjang3Hint: '아뿔싸',
+        jongjangRestHint: '지구를 사랑함이 너무 깊어 쓰레기까지 수집하는 성자로다.'
+      },
+      {
+        id: 'shortform',
+        title: '숏폼 도파민 중독',
+        icon: 'smartphone',
+        badge: 'bg-rose-100 text-rose-800 border-rose-300',
+        hoverBg: 'hover:bg-rose-50 hover:border-rose-400',
+        activeBg: 'bg-rose-50 border-rose-500 ring-2 ring-rose-400',
+        description: '공부나 할 일은 미뤄두고 15초짜리 영상에 몇 시간씩 빠지는 현실',
+        chojangHint: '기말고사 공부하려 책상 앞에 앉아 시계 시각만 확인하려 폰을 들었더니',
+        jungjangHint: '15초짜리 아이돌 춤판과 자극적인 릴스 알고리즘 덫에 덜컥 걸려 엄지손가락만 슥슥 올리다 보니 밤 열두 시 지나 새벽 세 시라, 눈은 핏발 서고 뇌는 멍하니 도파민만 들이켜 정작 교과서 펼쳐보지도 못한 채 날이 밝아오니',
+        jongjang3Hint: '슬프다',
+        jongjangRestHint: '유행하는 숏폼 챌린지 놓칠 뻔했으니 시험 좀 망친 들 억울할 것 없도다.'
+      },
+      {
+        id: 'sns',
+        title: 'SNS 중독',
+        icon: 'share-2',
+        badge: 'bg-purple-100 text-purple-800 border-purple-300',
+        hoverBg: 'hover:bg-purple-50 hover:border-purple-400',
+        activeBg: 'bg-purple-50 border-purple-500 ring-2 ring-purple-400',
+        description: '유명 디저트 카페와 명품 과시 뒤에 텅 빈 통장 잔고의 모순',
+        chojangHint: '유명 디저트 카페 예약하고 멋진 옷 슬쩍 걸쳐 감성 사진 찍으려 자리 잡았더니',
+        jungjangHint: '조명 좋은 각도 찾아 수백 장 찍어 겨우 한 장 건져 올리고 인플루언서 태그 달아 좋아요 개수 애타게 세다가, 통장 잔액 삼천 원 잔액 알림 찍힌 줄도 모르고 연신 스크롤만 올리니',
+        jongjang3Hint: '어즈버',
+        jongjangRestHint: '마음의 풍요가 으뜸이니 통장 잔고 빈 들 배고픈 들 어떠리.'
+      },
+      {
+        id: 'ai',
+        title: 'AI 문제',
+        icon: 'bot',
+        badge: 'bg-blue-100 text-blue-800 border-blue-300',
+        hoverBg: 'hover:bg-blue-50 hover:border-blue-400',
+        activeBg: 'bg-blue-50 border-blue-500 ring-2 ring-blue-400',
+        description: '생각과 과제를 모두 인공지능에 맡기고 뇌 사고를 멈춰버린 인간 소외',
+        chojangHint: '과제 제출 날 다가와 생성형 인공지능 화면 켜고 질문 한 줄 슬며시 던졌더니',
+        jungjangHint: '일 초 만에 세 장짜리 보고서를 뚝딱 써내니 내용이 뭔지도 모른 채 복사해 바삐 제출하고, 선생님은 AI 표절 검사 프로그램 돌려 감점 판정 내리니 기계가 글을 쓰고 기계가 검사하는 기이한 풍경 속에 정작 내 머리는 멍하니 서서',
+        jongjang3Hint: '뜻밖에',
+        jongjangRestHint: '인공지능 이리 똑똑해졌으니 내 머리는 평생 쉬어도 되겠구나.'
+      }
+    ];
+
+    const JONGJANG_STARTERS = ['아뿔싸', '어즈버', '슬프다', '아마도', '결국엔', '따지면', '어이타', '뜻밖에'];
+
+    const INITIAL_GALLERY = [
+      {
+        id: 'post-exam-1',
+        themeId: 'exam',
+        themeTitle: '시험기간 자기합리화',
+        author: '20101_홍길동',
+        chojang: '이번 시험은 미리 준비하여 백 점 받으리라 엄숙히 책상 앞에 앉았건만',
+        jungjang: '필통 정리부터 시작하여 책상 먼지 닦고 연필 깎고 십 년 전 다이어리 꺼내 읽다가 배고파 라면 끓여 먹고 졸려서 한 시간만 자야지 하고 눈떴더니 어느새 해가 번쩍 떠올라 교과서 한 장도 펼쳐보지 못한 채',
+        jongjang3: '아마도',
+        jongjangRest: '벼락치기가 내 체질에 딱 맞으니 이제야 제대로 공부할 맛 나는구나.',
+        likes: 21,
+        createdAt: '2026. 10. 22.',
+        timestamp: Date.now() - 100000
+      },
+      {
+        id: 'post-diet-1',
+        themeId: 'diet',
+        themeTitle: '다이어트',
+        author: '20102_성춘향',
+        chojang: '오늘부터 일 일 다이어트 선언하고 저녁 샐러드 한 그릇으로 겨우 참았건만',
+        jungjang: '밤 열한 시 넘어가니 배에서 요란하게 꼬르륵 소리 나고 배달 앱 알고리즘이 추천하는 숯불 양념 치킨과 분모자 떡볶이 환상의 비주얼에 눈 뒤집혀 나도 모르게 쿠폰 적용해 결제 버튼 누르고 들뜬 마음으로 배달원을 기다리니',
+        jongjang3: '어즈버',
+        jongjangRest: '내일부터 진짜 다이어트하면 되니 오늘 밤 맛있게 먹으면 영 칼로리로다.',
+        likes: 18,
+        createdAt: '2026. 10. 22.',
+        timestamp: Date.now() - 200000
+      }
+    ];
+
+    const SATIRE_VIDEOS = [
+      {
+        id: 'vid-1',
+        title: '고전 사설시조 [두터비 파리를 물고] 해설 & 애니메이션',
+        channel: '수지쌤의 국어시간',
+        embedId: 't8YRLYz2EIE',
+        tag: '대표 사설시조',
+        description: '파리(민중)를 괴롭히다 백송골(더 큰 권력)을 보고 놀라 자빠지는 두꺼비(탐관오리)의 허풍과 모순을 풍자한 대표 고전 작품입니다.',
+        badgeColor: 'bg-amber-100 text-amber-800 border-amber-300'
+      },
+      {
+        id: 'vid-2',
+        title: '[고등 문학] 작자미상 두터비 파리를 물고 손필기 강의',
+        channel: '사계 국기훈 기파랑',
+        embedId: 'QjGvp4jCKPg',
+        tag: '손필기 해설',
+        description: '초장-중장-종장의 시상 전개와 해학·풍자적 어조, 상징적 의미를 한눈에 파악하는 필수 문학 강의입니다.',
+        badgeColor: 'bg-blue-100 text-blue-800 border-blue-300'
+      },
+      {
+        id: 'vid-3',
+        title: '고전시가 속 풍자(諷刺)와 해학(諧謔)의 차이점 3분 정리',
+        channel: '국S (국스) : 국어 STUDY',
+        embedId: 'rYaaWZhvZIM',
+        tag: '개념 정리',
+        description: '풍자(대상에 대한 날카로운 비판과 찌름)와 해학(대상에 대한 연민과 따뜻한 웃음)의 차이를 쉽게 비교합니다.',
+        badgeColor: 'bg-rose-100 text-rose-800 border-rose-300'
+      }
+    ];
+
+    // State
+    let currentTab = 'create';
+    let selectedTheme = THEMES[0];
+    let activeFilter = 'all';
+    let gallery = [];
+    let likedMap = {};
+    let deletingId = null;
+    let editingPost = null;
+
+    // Load state from localStorage on init
+    function initApp() {
+      const savedGallery = localStorage.getItem('sijo_gallery');
+      if (savedGallery) {
+        try {
+          gallery = JSON.parse(savedGallery);
+        } catch (e) {
+          gallery = INITIAL_GALLERY;
+        }
+      } else {
+        gallery = INITIAL_GALLERY;
+        saveGalleryToStorage();
+      }
+
+      const savedLikes = localStorage.getItem('sijo_likes');
+      if (savedLikes) {
+        try {
+          likedMap = JSON.parse(savedLikes);
+        } catch (e) {
+          likedMap = {};
+        }
+      }
+
+      renderStarterChips();
+      renderThemeCards();
+      selectTheme(THEMES[0]);
+      renderFilterTabs();
+      renderGallery();
+      renderVideoCards();
+      
+      lucide.createIcons();
+    }
+
+    function saveGalleryToStorage() {
+      localStorage.setItem('sijo_gallery', JSON.stringify(gallery));
+    }
+
+    function saveLikesToStorage() {
+      localStorage.setItem('sijo_likes', JSON.stringify(likedMap));
+    }
+
+    // Tab Switcher
+    function switchTab(tab) {
+      currentTab = tab;
+      const createContent = document.getElementById('tab-content-create');
+      const mediaContent = document.getElementById('tab-content-media');
+      const btnCreate = document.getElementById('tab-btn-create');
+      const btnMedia = document.getElementById('tab-btn-media');
+
+      if (tab === 'create') {
+        createContent.classList.remove('hidden');
+        mediaContent.classList.add('hidden');
+        btnCreate.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 bg-amber-900 text-amber-50 shadow-xs";
+        btnMedia.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 text-amber-950 hover:bg-amber-300/50";
+      } else {
+        createContent.classList.add('hidden');
+        mediaContent.classList.remove('hidden');
+        btnMedia.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 bg-amber-900 text-amber-50 shadow-xs";
+        btnCreate.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 text-amber-950 hover:bg-amber-300/50";
+      }
+      lucide.createIcons();
+    }
+
+    // Theme Selector Render
+    function renderThemeCards() {
+      const container = document.getElementById('theme-cards-grid');
+      container.innerHTML = THEMES.map(theme => {
+        const isSelected = selectedTheme.id === theme.id;
+        return `
+          <button
+            type="button"
+            onclick="selectThemeById('${theme.id}')"
+            class="p-3 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between space-y-2 cursor-pointer ${
+              isSelected ? theme.activeBg : `bg-white/80 border-stone-200/80 ${theme.hoverBg}`
+            }"
+          >
+            <div class="flex items-center justify-between">
+              <span class="p-1.5 rounded-xl border ${theme.badge}">
+                <i data-lucide="${theme.icon}" class="w-4 h-4"></i>
+              </span>
+              ${isSelected ? '<i data-lucide="check" class="w-4 h-4 text-amber-700 font-bold"></i>' : ''}
+            </div>
+            <div>
+              <h3 class="text-xs font-bold text-stone-900">${theme.title}</h3>
+              <p class="text-[11px] text-stone-500 line-clamp-2 mt-0.5 leading-tight">
+                ${theme.description}
+              </p>
+            </div>
+          </button>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function selectThemeById(id) {
+      const theme = THEMES.find(t => t.id === id) || THEMES[0];
+      selectTheme(theme);
+    }
+
+    function selectTheme(theme) {
+      selectedTheme = theme;
+      renderThemeCards();
+
+      document.getElementById('selected-theme-badge').innerText = theme.title;
+      document.getElementById('form-theme-title').value = theme.title;
+      document.getElementById('form-chojang').value = theme.chojangHint;
+      document.getElementById('form-jungjang').value = theme.jungjangHint;
+      document.getElementById('form-jongjang3').value = theme.jongjang3Hint;
+      document.getElementById('form-jongjang-rest').value = theme.jongjangRestHint;
+
+      handleJongjang3Input();
+    }
+
+    // Starter Chips Render
+    function renderStarterChips() {
+      const container = document.getElementById('starter-chips');
+      container.innerHTML = JONGJANG_STARTERS.map(word => `
+        <button
+          type="button"
+          onclick="applyStarter('${word}')"
+          class="text-xs px-2 py-0.5 rounded-lg border transition-colors bg-white text-stone-700 border-amber-200 hover:bg-amber-100"
+        >
+          ${word}
+        </button>
+      `).join('');
+    }
+
+    function applyStarter(word) {
+      document.getElementById('form-jongjang3').value = word;
+      handleJongjang3Input();
+    }
+
+    // Live Jongjang 3-letter validation
+    function handleJongjang3Input() {
+      const val = document.getElementById('form-jongjang3').value.trim();
+      const badge = document.getElementById('jongjang-valid-badge');
+      const input = document.getElementById('form-jongjang3');
+      const submitBtn = document.getElementById('submit-btn');
+
+      if (val.length === 3) {
+        badge.className = "text-xs px-2.5 py-0.5 rounded-full font-bold border bg-emerald-100 text-emerald-800 border-emerald-300";
+        badge.innerText = "✓ 3글자 규칙 준수";
+        input.className = "col-span-4 sm:col-span-3 text-xs md:text-sm px-3 py-2.5 rounded-xl border text-center font-bold font-serif-kr focus:ring-2 focus:ring-amber-500 focus:outline-none border-emerald-500 bg-emerald-50/50";
+        submitBtn.disabled = false;
+      } else {
+        badge.className = "text-xs px-2.5 py-0.5 rounded-full font-bold border bg-rose-100 text-rose-800 border-rose-300";
+        badge.innerText = `${val.length}글자 (정확히 3글자 작성 필요)`;
+        input.className = "col-span-4 sm:col-span-3 text-xs md:text-sm px-3 py-2.5 rounded-xl border text-center font-bold font-serif-kr focus:ring-2 focus:ring-amber-500 focus:outline-none border-rose-400 bg-white";
+        submitBtn.disabled = true;
+      }
+    }
+
+    // HWP Document Content Generator
+    function generateHWPContent(item) {
+      return `================================================
+[현대판 사설시조 창작소 - 국어과 수행평가 제출용]
+================================================
+
+■ 풍자 주제 : ${item.themeTitle}
+■ 작성자(학번/이름) : ${item.author}
+■ 제출 일자 : ${item.createdAt}
+
+------------------------------------------------
+[ 사 설 시 조  본 문 ]
+------------------------------------------------
+
+(초장)
+${item.chojang}
+
+(중장)
+${item.jungjang}
+
+(종장)
+${item.jongjang3} ${item.jongjangRest}
+
+------------------------------------------------
+■ 풍자 의도 및 시상 전개 구조:
+- 초장 : 겉으로 내세우는 정당한 명분 및 시작 상황
+- 중장 : 현실에서 일어나는 불합리/과장된 상황의 긴 열거
+- 종장 : 첫 3글자(${item.jongjang3})로 시상 반전 및 뻔뻔한 자기합리화
+
+※ 본 문서는 한컴오피스 한글(.hwp) 및 웹 오피스에서 바로 열어 편집할 수 있는 양식 문서입니다.
+================================================`;
+    }
+
+    function downloadHWPFile(item) {
+      const content = generateHWPContent(item);
+      const blob = new Blob([content], { type: 'application/x-hwp;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+
+      let sanitizedAuthor = (item.author || '').trim().replace(/[\s/\\?%*:|"<>]+/g, '_');
+      if (!sanitizedAuthor) sanitizedAuthor = '익명의유생';
+      const fileName = `${sanitizedAuthor}_사설시조.hwp`;
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      return fileName;
+    }
+
+    // Form Submit
+    function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const author = document.getElementById('form-author').value.trim();
+      const themeTitle = document.getElementById('form-theme-title').value.trim();
+      const chojang = document.getElementById('form-chojang').value.trim();
+      const jungjang = document.getElementById('form-jungjang').value.trim();
+      const jongjang3 = document.getElementById('form-jongjang3').value.trim();
+      const jongjangRest = document.getElementById('form-jongjang-rest').value.trim();
+
+      if (!author || !chojang || !jungjang || jongjang3.length !== 3 || !jongjangRest) {
+        showToast('모든 필수 항목을 올바르게 채워주세요. (종장 첫마디는 3글자)');
+        return;
+      }
+
+      const docId = `post-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+      const newPost = {
+        id: docId,
+        themeId: selectedTheme.id,
+        themeTitle: themeTitle,
+        author: author,
+        chojang: chojang,
+        jungjang: jungjang,
+        jongjang3: jongjang3,
+        jongjangRest: jongjangRest,
+        likes: 0,
+        createdAt: new Date().toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }),
+        timestamp: Date.now()
+      };
+
+      // Add to gallery
+      gallery.unshift(newPost);
+      saveGalleryToStorage();
+      renderGallery();
+
+      // Download HWP File
+      const fileName = downloadHWPFile(newPost);
+
+      // Show Banner
+      const banner = document.getElementById('success-banner');
+      const bannerMsg = document.getElementById('success-banner-msg');
+      bannerMsg.innerText = `작성한 작품이 공유 갤러리에 추가되었으며, HWP 파일(${fileName})이 자동 다운로드되었습니다.`;
+      banner.classList.remove('hidden');
+
+      // Reset Form fields except author
+      document.getElementById('form-chojang').value = '';
+      document.getElementById('form-jungjang').value = '';
+      document.getElementById('form-jongjang3').value = '';
+      document.getElementById('form-jongjang-rest').value = '';
+      handleJongjang3Input();
+
+      // Scroll to gallery
+      setTimeout(() => {
+        const gal = document.getElementById('class-gallery');
+        if (gal) gal.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+
+    function closeSuccessBanner() {
+      document.getElementById('success-banner').classList.add('hidden');
+    }
+
+    // Filter Tabs Render
+    function renderFilterTabs() {
+      const container = document.getElementById('filter-tabs');
+      let html = `
+        <button
+          onclick="setFilter('all')"
+          class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all whitespace-nowrap border ${
+            activeFilter === 'all'
+              ? 'bg-amber-900 text-white border-amber-900'
+              : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-100'
+          }"
+        >
+          전체 보기 (${gallery.length})
+        </button>
+      `;
+
+      THEMES.forEach(t => {
+        const count = gallery.filter(g => g.themeId === t.id).length;
+        html += `
+          <button
+            onclick="setFilter('${t.id}')"
+            class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all whitespace-nowrap border ${
+              activeFilter === t.id
+                ? 'bg-amber-900 text-white border-amber-900'
+                : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-100'
+            }"
+          >
+            ${t.title} (${count})
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function setFilter(filter) {
+      activeFilter = filter;
+      renderFilterTabs();
+      renderGallery();
+    }
+
+    // Gallery Render
+    function renderGallery() {
+      const container = document.getElementById('gallery-grid');
+      const filtered = activeFilter === 'all'
+        ? gallery
+        : gallery.filter(item => item.themeId === activeFilter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full bg-white rounded-2xl p-10 text-center border border-dashed border-stone-300 space-y-2">
+            <i data-lucide="feather" class="w-8 h-8 text-stone-300 mx-auto"></i>
+            <p class="text-xs text-stone-500 font-medium">아직 등록된 사설시조 작품이 없습니다.</p>
+            <p class="text-[11px] text-stone-400">위 양식에서 첫 번째 작품을 제출해 보세요!</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const themeObj = THEMES.find(t => t.id === item.themeId) || THEMES[0];
+        const isLiked = !!likedMap[item.id];
+
+        return `
+          <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between space-y-4 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-28 h-28 bg-amber-100/40 rounded-full blur-xl pointer-events-none"></div>
+
+            <div>
+              <!-- Card Header -->
+              <div class="flex items-center justify-between border-b border-stone-100 pb-3 mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="p-1.5 rounded-xl border text-xs ${themeObj.badge}">
+                    <i data-lucide="${themeObj.icon}" class="w-3.5 h-3.5"></i>
+                  </span>
+                  <div>
+                    <span class="text-xs font-bold text-stone-900 block line-clamp-1">
+                      ${item.themeTitle}
+                    </span>
+                    <span class="text-[11px] text-stone-500">${item.author}</span>
+                  </div>
+                </div>
+                <span class="text-[10px] text-stone-400 font-mono">${item.createdAt}</span>
+              </div>
+
+              <!-- Poem Body -->
+              <div class="space-y-2.5 font-serif-kr text-stone-800 bg-[#FAF8F5] p-3.5 rounded-2xl border border-stone-100">
+                <p class="text-xs md:text-sm leading-snug">
+                  <span class="text-[10px] font-sans font-bold text-stone-400 mr-1.5">[초장]</span>
+                  ${item.chojang}
+                </p>
+                <p class="text-xs md:text-sm leading-relaxed text-stone-900">
+                  <span class="text-[10px] font-sans font-bold text-amber-800 mr-1.5">[중장]</span>
+                  ${item.jungjang}
+                </p>
+                <p class="text-xs md:text-sm leading-snug font-bold text-amber-950 pt-1 border-t border-stone-200/60">
+                  <span class="text-[10px] font-sans font-bold text-rose-600 mr-1.5">[종장]</span>
+                  <span class="bg-amber-200/80 px-1 py-0.5 rounded mr-1">
+                    ${item.jongjang3}
+                  </span>
+                  ${item.jongjangRest}
+                </p>
+              </div>
+            </div>
+
+            <!-- Card Actions -->
+            <div class="flex items-center justify-between pt-2 text-xs border-t border-stone-100">
+              <button
+                onclick="toggleLike('${item.id}')"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-colors cursor-pointer ${
+                  isLiked
+                    ? 'bg-rose-50 text-rose-700 border-rose-300 font-bold'
+                    : 'bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100'
+                }"
+              >
+                <i data-lucide="heart" class="w-3.5 h-3.5 ${isLiked ? 'fill-rose-500 text-rose-500' : ''}"></i>
+                <span>공감 ${item.likes || 0}</span>
+              </button>
+
+              <div class="flex items-center gap-1">
+                <button
+                  onclick="copyPoemText('${item.id}')"
+                  class="p-2 text-stone-500 hover:text-amber-900 hover:bg-amber-50 rounded-xl transition-colors cursor-pointer"
+                  title="시조 텍스트 복사"
+                >
+                  <i data-lucide="copy" class="w-4 h-4"></i>
+                </button>
+                <button
+                  onclick="downloadPoemHWP('${item.id}')"
+                  class="p-2 text-stone-500 hover:text-emerald-800 hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
+                  title="HWP 파일 다운로드"
+                >
+                  <i data-lucide="download" class="w-4 h-4"></i>
+                </button>
+                <button
+                  onclick="openEditModal('${item.id}')"
+                  class="p-2 text-stone-500 hover:text-amber-800 hover:bg-amber-50 rounded-xl transition-colors cursor-pointer"
+                  title="수정하기"
+                >
+                  <i data-lucide="pencil" class="w-4 h-4"></i>
+                </button>
+                <button
+                  onclick="openDeleteModal('${item.id}')"
+                  class="p-2 text-stone-400 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
+                  title="삭제하기"
+                >
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // Like Action
+    function toggleLike(id) {
+      const isLiked = !!likedMap[id];
+      likedMap[id] = !isLiked;
+      
+      gallery = gallery.map(item => {
+        if (item.id === id) {
+          return { ...item, likes: isLiked ? Math.max(0, item.likes - 1) : item.likes + 1 };
+        }
+        return item;
+      });
+
+      saveLikesToStorage();
+      saveGalleryToStorage();
+      renderGallery();
+    }
+
+    // Copy Text
+    function copyPoemText(id) {
+      const item = gallery.find(g => g.id === id);
+      if (!item) return;
+
+      const fullText = `[${item.themeTitle}]\n작성자: ${item.author}\n\n(초장) ${item.chojang}\n(중장) ${item.jungjang}\n(종장) ${item.jongjang3} ${item.jongjangRest}`;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = fullText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('시조 본문이 클립보드에 복사되었습니다!');
+      } catch (e) {
+        showToast('복사에 실패하였습니다.');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function downloadPoemHWP(id) {
+      const item = gallery.find(g => g.id === id);
+      if (item) {
+        const name = downloadHWPFile(item);
+        showToast(`${name} 파일이 다운로드되었습니다.`);
+      }
+    }
+
+    // Delete Modal
+    function openDeleteModal(id) {
+      deletingId = id;
+      document.getElementById('delete-modal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      deletingId = null;
+      document.getElementById('delete-modal').classList.add('hidden');
+    }
+
+    function confirmDeletePost() {
+      if (deletingId) {
+        gallery = gallery.filter(g => g.id !== deletingId);
+        saveGalleryToStorage();
+        renderGallery();
+        renderFilterTabs();
+        closeDeleteModal();
+        showToast('작품이 삭제되었습니다.');
+      }
+    }
+
+    // Edit Modal
+    function openEditModal(id) {
+      editingPost = gallery.find(g => g.id === id);
+      if (!editingPost) return;
+
+      document.getElementById('edit-theme-title').value = editingPost.themeTitle;
+      document.getElementById('edit-author').value = editingPost.author;
+      document.getElementById('edit-chojang').value = editingPost.chojang;
+      document.getElementById('edit-jungjang').value = editingPost.jungjang;
+      document.getElementById('edit-jongjang3').value = editingPost.jongjang3;
+      document.getElementById('edit-jongjang-rest').value = editingPost.jongjangRest;
+
+      handleEditJongjang3Input();
+      document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      editingPost = null;
+      document.getElementById('edit-modal').classList.add('hidden');
+    }
+
+    function handleEditJongjang3Input() {
+      const val = document.getElementById('edit-jongjang3').value.trim();
+      const badge = document.getElementById('edit-jongjang3-badge');
+      const saveBtn = document.getElementById('edit-save-btn');
+
+      if (val.length === 3) {
+        badge.className = "text-xs font-medium text-emerald-700";
+        badge.innerText = "✓ 3글자 확인";
+        saveBtn.disabled = false;
+      } else {
+        badge.className = "text-xs font-medium text-rose-600";
+        badge.innerText = `${val.length}글자 (3글자 필수)`;
+        saveBtn.disabled = true;
+      }
+    }
+
+    function handleSaveEdit(e) {
+      e.preventDefault();
+      if (!editingPost) return;
+
+      const themeTitle = document.getElementById('edit-theme-title').value.trim();
+      const author = document.getElementById('edit-author').value.trim();
+      const chojang = document.getElementById('edit-chojang').value.trim();
+      const jungjang = document.getElementById('edit-jungjang').value.trim();
+      const jongjang3 = document.getElementById('edit-jongjang3').value.trim();
+      const jongjangRest = document.getElementById('edit-jongjang-rest').value.trim();
+
+      if (jongjang3.length !== 3) {
+        showToast('종장 첫마디는 반드시 3글자여야 합니다.');
+        return;
+      }
+
+      gallery = gallery.map(item => {
+        if (item.id === editingPost.id) {
+          return {
+            ...item,
+            themeTitle,
+            author,
+            chojang,
+            jungjang,
+            jongjang3,
+            jongjangRest
+          };
+        }
+        return item;
+      });
+
+      saveGalleryToStorage();
+      renderGallery();
+      closeEditModal();
+      showToast('작품이 수정 저장되었습니다.');
+    }
+
+    // Video Section
+    function renderVideoCards() {
+      const container = document.getElementById('video-cards-grid');
+      container.innerHTML = SATIRE_VIDEOS.map(vid => `
+        <div class="bg-stone-50 rounded-2xl p-4 border border-stone-200 flex flex-col justify-between space-y-3 hover:border-amber-400 transition-all">
+          <div class="space-y-2">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-md border ${vid.badgeColor}">
+              ${vid.tag}
+            </span>
+            <h3 class="text-xs font-bold text-stone-900 leading-snug line-clamp-2">
+              ${vid.title}
+            </h3>
+            <p class="text-[11px] text-stone-500 line-clamp-3 leading-relaxed">
+              ${vid.description}
+            </p>
+          </div>
+
+          <div class="pt-2 border-t border-stone-200 flex items-center justify-between">
+            <span class="text-[10px] text-stone-400">${vid.channel}</span>
+            <button
+              onclick="openVideoModal('${vid.embedId}', '${vid.title}')"
+              class="px-3 py-1.5 text-xs font-bold bg-amber-900 hover:bg-amber-950 text-white rounded-xl flex items-center gap-1 shadow-xs cursor-pointer"
+            >
+              <i data-lucide="play" class="w-3 h-3 fill-white"></i>
+              <span>영상 보기</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openVideoModal(embedId, title) {
+      document.getElementById('video-modal-title').innerText = `🎬 ${title}`;
+      document.getElementById('video-modal-iframe').src = `https://www.youtube.com/embed/${embedId}?autoplay=1`;
+      document.getElementById('video-modal').classList.remove('hidden');
+    }
+
+    function closeVideoModal() {
+      document.getElementById('video-modal-iframe').src = '';
+      document.getElementById('video-modal').classList.add('hidden');
+    }
+
+    // Guide Modal
+    function openGuideModal() {
+      document.getElementById('guide-modal').classList.remove('hidden');
+    }
+
+    function closeGuideModal() {
+      document.getElementById('guide-modal').classList.add('hidden');
+    }
+
+    // Toast Notification helper
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = "bg-stone-900/90 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 pointer-events-auto transition-all transform translate-y-2 opacity-0";
+      toast.innerHTML = `
+        <i data-lucide="info" class="w-4 h-4 text-amber-400"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
