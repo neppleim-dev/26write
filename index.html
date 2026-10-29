@@ -72,9 +72,6 @@
                 현대판 사설시조 창작소
               </span>
             </h1>
-            <p class="text-xs text-stone-600 hidden sm:block mt-0.5">
-              실시간 학급 공유 갤러리 & HWP 문서 자동 다운로드 연동 국어 교실
-            </p>
           </div>
         </div>
 
@@ -113,28 +110,8 @@
     <!-- Main Content Container -->
     <main class="max-w-6xl mx-auto px-4 py-6">
 
-      <!-- TAB 1: CREATE & GALLERY SECTION -->
+      <!-- TAB 1: CREATE SECTION -->
       <div id="tab-content-create" class="space-y-8">
-
-        <!-- Submission Success Banner -->
-        <div id="success-banner" class="hidden p-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-md">
-          <div class="flex items-center gap-3">
-            <div class="p-2 bg-emerald-500 text-white rounded-xl">
-              <i data-lucide="check-circle-2" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-bold text-emerald-950">
-                🎉 사설시조 학급 공유 제출 및 HWP 다운로드 완료!
-              </h3>
-              <p id="success-banner-msg" class="text-xs text-emerald-800 mt-0.5">
-                작성한 작품이 실시간 학급 갤러리에 동기화되었으며, HWP 문서가 다운로드되었습니다.
-              </p>
-            </div>
-          </div>
-          <button onclick="closeSuccessBanner()" class="p-1 text-emerald-700 hover:text-emerald-900 rounded-lg">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
 
         <!-- Step 1: Theme Selection -->
         <section class="space-y-3">
@@ -165,7 +142,7 @@
             </span>
           </div>
 
-          <form id="sijo-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+          <form id="sijo-form" onsubmit="event.preventDefault();" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-bold text-stone-800 mb-1" for="form-author">
@@ -261,49 +238,9 @@
                 />
               </div>
             </div>
-
-            <!-- Submit Button Footer -->
-            <div class="pt-2 flex flex-wrap items-center justify-between gap-3">
-              <p class="text-xs text-stone-500 flex items-center gap-1">
-                <i data-lucide="info" class="w-3.5 h-3.5 text-stone-400"></i>
-                작성한 사설시조는 학급 공유 갤러리에 실시간으로 저장되고 HWP로 다운로드됩니다.
-              </p>
-              <button
-                type="submit"
-                id="submit-btn"
-                class="px-6 py-3 rounded-2xl text-xs md:text-sm font-bold text-white bg-amber-900 hover:bg-amber-950 active:scale-98 shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:bg-stone-300 disabled:cursor-not-allowed"
-              >
-                <i data-lucide="send" class="w-4 h-4"></i>
-                <span id="submit-btn-text">학급 갤러리 제출 및 HWP 저장</span>
-              </button>
-            </div>
           </form>
         </section>
 
-        <!-- Step 3: Gallery -->
-        <section id="class-gallery" class="space-y-4 pt-4 border-t border-amber-200/80">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 class="text-lg font-serif-kr font-bold text-amber-950 flex items-center gap-2">
-                <i data-lucide="book-open" class="w-5 h-5 text-amber-800"></i>
-                3단계: 우리 학급 사설시조 공유 갤러리
-              </h2>
-              <p class="text-xs text-stone-600 mt-0.5">
-                학급 친구들이 창작한 현대판 사설시조 작품을 실시간으로 감상하고 공감(좋아요)을 눌러보세요.
-              </p>
-            </div>
-
-            <!-- Theme Filter Buttons -->
-            <div id="filter-tabs" class="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-
-          <!-- Cards Grid -->
-          <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Rendered by JS -->
-          </div>
-        </section>
       </div>
 
       <!-- TAB 2: MEDIA EXPLORATION SECTION -->
@@ -429,230 +366,6 @@
     </div>
   </div>
 
-  <!-- Delete Modal -->
-  <div id="delete-modal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-stone-200 text-center">
-      <div class="w-12 h-12 bg-rose-100 text-rose-700 rounded-full flex items-center justify-center mx-auto">
-        <i data-lucide="trash-2" class="w-6 h-6"></i>
-      </div>
-      <div>
-        <h3 class="text-base font-bold font-serif-kr text-stone-900">사설시조 작품 삭제</h3>
-        <p class="text-xs text-stone-600 mt-1">
-          이 작품을 학급 공유 갤러리에서 정말 삭제하시겠습니까?
-        </p>
-      </div>
-      <div class="flex gap-2 pt-2">
-        <button
-          onclick="closeDeleteModal()"
-          class="flex-1 py-2 text-xs font-semibold bg-stone-100 text-stone-700 rounded-xl cursor-pointer"
-        >
-          취소
-        </button>
-        <button
-          onclick="confirmDeletePost()"
-          class="flex-1 py-2 text-xs font-semibold bg-rose-700 text-white rounded-xl shadow-xs cursor-pointer"
-        >
-          삭제하기
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit Modal -->
-  <div id="edit-modal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl border border-stone-200 max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b pb-3">
-        <h3 class="text-lg font-serif-kr font-bold text-amber-950 flex items-center gap-2">
-          <i data-lucide="pencil" class="w-5 h-5 text-amber-800"></i>
-          사설시조 작품 수정
-        </h3>
-        <button onclick="closeEditModal()" class="text-stone-400 hover:text-stone-700 p-1">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="edit-form" onsubmit="handleSaveEdit(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-stone-700 mb-1" for="edit-theme-title">풍자 주제</label>
-          <input
-            type="text"
-            id="edit-theme-title"
-            required
-            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 bg-white"
-          />
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-stone-700 mb-1" for="edit-author">작성자 (학번 / 이름)</label>
-          <input
-            type="text"
-            id="edit-author"
-            required
-            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 bg-stone-50"
-          />
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-stone-800 mb-1" for="edit-chojang">[초장] 명분/시작 상황</label>
-          <input
-            type="text"
-            id="edit-chojang"
-            required
-            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 font-serif-kr"
-          />
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-stone-800 mb-1" for="edit-jungjang">[중장] 현실 사설 내용</label>
-          <textarea
-            id="edit-jungjang"
-            rows="3"
-            required
-            class="w-full text-xs px-3 py-2 rounded-lg border border-stone-300 font-serif-kr leading-relaxed"
-          ></textarea>
-        </div>
-
-        <div class="space-y-2 p-3 rounded-xl bg-amber-50/60 border border-amber-200">
-          <div class="flex items-center justify-between">
-            <label class="text-xs font-semibold text-amber-950" for="edit-jongjang3">[종장] 반전 (첫 3글자 필수)</label>
-            <span id="edit-jongjang3-badge" class="text-xs font-medium text-emerald-700">
-              ✓ 3글자 확인
-            </span>
-          </div>
-          <div class="grid grid-cols-12 gap-2">
-            <input
-              type="text"
-              id="edit-jongjang3"
-              required
-              maxLength="4"
-              oninput="handleEditJongjang3Input()"
-              class="col-span-3 text-xs px-2 py-2 rounded-lg font-bold text-center border border-amber-300 bg-white font-serif-kr"
-            />
-            <input
-              type="text"
-              id="edit-jongjang-rest"
-              required
-              class="col-span-9 text-xs px-3 py-2 rounded-lg border border-stone-300 bg-white font-serif-kr"
-            />
-          </div>
-        </div>
-
-        <div class="pt-2 flex justify-end gap-2">
-          <button
-            type="button"
-            onclick="closeEditModal()"
-            class="px-4 py-2 bg-stone-100 text-stone-700 text-xs font-semibold rounded-xl cursor-pointer"
-          >
-            취소
-          </button>
-          <button
-            type="submit"
-            id="edit-save-btn"
-            class="px-4 py-2 text-xs font-bold rounded-xl text-white bg-amber-900 hover:bg-amber-950 cursor-pointer"
-          >
-            수정 저장
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
-
-  <!-- FIREBASE REALTIME CLOUD INTEGRATION SCRIPT -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Firestore Rules Compliant Config & Initialization
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'modern-sijo-app';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' 
-      ? JSON.parse(__firebase_config) 
-      : {
-          apiKey: "AIzaSyDemoConfigForTestingOnly",
-          authDomain: "demo-app.firebaseapp.com",
-          projectId: "demo-app",
-          storageBucket: "demo-app.appspot.com",
-          messagingSenderId: "123456789",
-          appId: "1:123456789:web:demo"
-        };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    let authUser = null;
-
-    // Strict Path according to Rule 1: /artifacts/{appId}/public/data/sijo_posts
-    const getSijoCollectionRef = () => collection(db, 'artifacts', appId, 'public', 'data', 'sijo_posts');
-
-    // Rule 3: Auth First
-    async function initSharedFirebase() {
-      try {
-        const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : undefined;
-        if (initialToken) {
-          const cred = await signInWithCustomToken(auth, initialToken);
-          authUser = cred.user;
-        } else {
-          const cred = await signInAnonymously(auth);
-          authUser = cred.user;
-        }
-        setupRealtimeGalleryListener();
-      } catch (err) {
-        console.error("Firebase authentication error:", err);
-      }
-    }
-
-    // Rule 2: Fetch all in simple query & sort in JS memory for real-time syncing
-    function setupRealtimeGalleryListener() {
-      if (!authUser) return;
-
-      const colRef = getSijoCollectionRef();
-      onSnapshot(colRef, (snapshot) => {
-        const posts = [];
-        snapshot.forEach((docSnap) => {
-          posts.push({
-            id: docSnap.id,
-            ...docSnap.data()
-          });
-        });
-
-        // Memory sort: newest first
-        posts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-
-        window.gallery = posts;
-        if (typeof window.renderFilterTabs === 'function') window.renderFilterTabs();
-        if (typeof window.renderGallery === 'function') window.renderGallery();
-      }, (error) => {
-        console.error("Realtime gallery snapshot error:", error);
-      });
-    }
-
-    // Expose DB handlers globally
-    window.addSijoToCloud = async function(postData) {
-      if (!authUser) await initSharedFirebase();
-      const colRef = getSijoCollectionRef();
-      return await addDoc(colRef, postData);
-    };
-
-    window.updateSijoInCloud = async function(postId, updatedFields) {
-      if (!authUser) return;
-      const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'sijo_posts', postId);
-      return await updateDoc(docRef, updatedFields);
-    };
-
-    window.deleteSijoFromCloud = async function(postId) {
-      if (!authUser) return;
-      const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'sijo_posts', postId);
-      return await deleteDoc(docRef);
-    };
-
-    // Initialize Firebase Auth & Realtime Listener
-    initSharedFirebase();
-  </script>
-
   <!-- JAVASCRIPT APP LOGIC -->
   <script>
     // Theme Data Definition
@@ -753,115 +466,114 @@
         id: 'vid-2',
         title: '[고등 문학] 작자미상 두터비 파리를 물고 손필기 강의',
         channel: '사계 국기훈 기파랑',
-        embedId: 'QjGvp4jCKPg',
-        tag: '손필기 해설',
-        description: '초장-중장-종장의 시상 전개와 해학·풍자적 어조, 상징적 의미를 한눈에 파악하는 필수 문학 강의입니다.',
-        badgeColor: 'bg-blue-100 text-blue-800 border-blue-300'
+        embedId: '1L2v9sI3X7k',
+        tag: '핵심 구절 분석',
+        description: '두터비, 파리, 백송골의 비유적 의미와 종장의 해학적 반전 요소를 상세히 분석합니다.',
+        badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300'
       },
       {
         id: 'vid-3',
-        title: '고전시가 속 풍자(諷刺)와 해학(諧謔)의 차이점 3분 정리',
-        channel: '국S (국스) : 국어 STUDY',
-        embedId: 'rYaaWZhvZIM',
+        title: '사설시조의 특징과 현대적 변용 및 풍자의 이해',
+        channel: 'EBS 중학 국어',
+        embedId: 'dQw4w9WgXcQ',
         tag: '개념 정리',
-        description: '풍자(대상에 대한 날카로운 비판과 찌름)와 해학(대상에 대한 연민과 따뜻한 웃음)의 차이를 쉽게 비교합니다.',
-        badgeColor: 'bg-rose-100 text-rose-800 border-rose-300'
+        description: '평시조와의 차이점, 중장 파쇄의 구조적 특징 및 현대 풍자 문화와의 연관성을 살펴봅니다.',
+        badgeColor: 'bg-purple-100 text-purple-800 border-purple-300'
       }
     ];
 
-    // Global State
-    window.gallery = [];
-    let currentTab = 'create';
-    let selectedTheme = THEMES[0];
-    let activeFilter = 'all';
-    let deletingId = null;
-    let editingPost = null;
+    let currentSelectedTheme = THEMES[0];
 
-    // App Initialization
-    function initApp() {
-      renderStarterChips();
+    // Initialize App
+    window.addEventListener('DOMContentLoaded', () => {
       renderThemeCards();
-      selectTheme(THEMES[0]);
-      renderFilterTabs();
-      renderGallery();
+      renderStarterChips();
       renderVideoCards();
-      
-      lucide.createIcons();
-    }
+      selectTheme('exam');
+      if (window.lucide) lucide.createIcons();
+    });
 
-    // Tab Switcher
-    function switchTab(tab) {
-      currentTab = tab;
+    // Switch Top Tabs
+    window.switchTab = function(tabName) {
       const createContent = document.getElementById('tab-content-create');
       const mediaContent = document.getElementById('tab-content-media');
-      const btnCreate = document.getElementById('tab-btn-create');
-      const btnMedia = document.getElementById('tab-btn-media');
+      const createBtn = document.getElementById('tab-btn-create');
+      const mediaBtn = document.getElementById('tab-btn-media');
 
-      if (tab === 'create') {
+      if (tabName === 'create') {
         createContent.classList.remove('hidden');
         mediaContent.classList.add('hidden');
-        btnCreate.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 bg-amber-900 text-amber-50 shadow-xs";
-        btnMedia.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 text-amber-950 hover:bg-amber-300/50";
+        createBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 bg-amber-900 text-amber-50 shadow-xs';
+        mediaBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 text-amber-950 hover:bg-amber-300/50';
       } else {
         createContent.classList.add('hidden');
         mediaContent.classList.remove('hidden');
-        btnMedia.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 bg-amber-900 text-amber-50 shadow-xs";
-        btnCreate.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 text-amber-950 hover:bg-amber-300/50";
+        mediaBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 bg-amber-900 text-amber-50 shadow-xs';
+        createBtn.className = 'px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 text-amber-950 hover:bg-amber-300/50';
       }
-      lucide.createIcons();
-    }
+      if (window.lucide) lucide.createIcons();
+    };
 
-    // Theme Selection
+    // Render Theme Cards
     function renderThemeCards() {
-      const container = document.getElementById('theme-cards-grid');
-      container.innerHTML = '';
+      const grid = document.getElementById('theme-cards-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
 
-      THEMES.forEach(t => {
-        const isSelected = selectedTheme.id === t.id;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.onclick = () => selectTheme(t);
-        btn.className = `p-3 rounded-2xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
-          isSelected ? t.activeBg : `bg-white border-stone-200/80 ${t.hoverBg}`
-        }`;
+      THEMES.forEach((t) => {
+        const card = document.createElement('div');
+        card.id = `theme-card-${t.id}`;
+        card.onclick = () => selectTheme(t.id);
+        card.className = `p-3 rounded-2xl border transition-all cursor-pointer bg-white border-stone-200/80 ${t.hoverBg} flex flex-col justify-between space-y-2`;
 
-        btn.innerHTML = `
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-bold px-2 py-0.5 rounded-full ${t.badge} inline-block">
-              ${t.title}
-            </span>
-            <i data-lucide="${t.icon}" class="w-4 h-4 text-stone-500"></i>
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] px-2 py-0.5 rounded-full font-semibold border ${t.badge}">
+                ${t.title}
+              </span>
+            </div>
+            <p class="text-[11px] text-stone-600 line-clamp-2 leading-relaxed">
+              ${t.description}
+            </p>
           </div>
-          <p class="text-[11px] text-stone-600 line-clamp-2 leading-tight">
-            ${t.description}
-          </p>
         `;
-        container.appendChild(btn);
+        grid.appendChild(card);
       });
-      lucide.createIcons();
     }
 
-    function selectTheme(theme) {
-      selectedTheme = theme;
-      renderThemeCards();
+    // Select Theme Action
+    window.selectTheme = function(themeId) {
+      const theme = THEMES.find(t => t.id === themeId) || THEMES[0];
+      currentSelectedTheme = theme;
 
-      document.getElementById('selected-theme-badge').innerText = theme.title;
+      THEMES.forEach((t) => {
+        const card = document.getElementById(`theme-card-${t.id}`);
+        if (card) {
+          if (t.id === themeId) {
+            card.className = `p-3 rounded-2xl border transition-all cursor-pointer ${t.activeBg} flex flex-col justify-between space-y-2 shadow-xs`;
+          } else {
+            card.className = `p-3 rounded-2xl border transition-all cursor-pointer bg-white border-stone-200/80 ${t.hoverBg} flex flex-col justify-between space-y-2`;
+          }
+        }
+      });
+
+      const badge = document.getElementById('selected-theme-badge');
+      if (badge) badge.innerText = theme.title;
+
       document.getElementById('form-theme-title').value = theme.title;
-
-      document.getElementById('form-chojang').placeholder = `예: ${theme.chojangHint}`;
-      document.getElementById('form-jungjang').placeholder = `예: ${theme.jungjangHint}`;
+      document.getElementById('form-chojang').value = theme.chojangHint;
+      document.getElementById('form-jungjang').value = theme.jungjangHint;
       document.getElementById('form-jongjang3').value = theme.jongjang3Hint;
       document.getElementById('form-jongjang-rest').value = theme.jongjangRestHint;
 
-      document.getElementById('form-chojang').value = theme.chojangHint;
-      document.getElementById('form-jungjang').value = theme.jungjangHint;
-
       handleJongjang3Input();
-    }
+    };
 
-    // Starter Chips
+    // Render Starter Chips
     function renderStarterChips() {
       const container = document.getElementById('starter-chips');
+      if (!container) return;
       container.innerHTML = '';
 
       JONGJANG_STARTERS.forEach(word => {
@@ -871,435 +583,83 @@
           document.getElementById('form-jongjang3').value = word;
           handleJongjang3Input();
         };
-        chip.className = "px-2 py-0.5 text-xs bg-white hover:bg-amber-100 text-stone-700 font-serif-kr rounded-md border border-amber-200 shadow-2xs transition-colors cursor-pointer";
+        chip.className = 'px-2 py-0.5 text-[11px] rounded-lg bg-white border border-amber-200 hover:bg-amber-100 text-amber-900 font-serif-kr cursor-pointer transition';
         chip.innerText = word;
         container.appendChild(chip);
       });
     }
 
-    // 3-Letter Validation
-    function handleJongjang3Input() {
-      const val = document.getElementById('form-jongjang3').value.trim();
+    // Validate 3-character rule for Jongjang first word
+    window.handleJongjang3Input = function() {
+      const input = document.getElementById('form-jongjang3');
       const badge = document.getElementById('jongjang-valid-badge');
-      const submitBtn = document.getElementById('submit-btn');
+      if (!input || !badge) return;
 
-      if (val.length === 3) {
-        badge.className = "text-xs px-2.5 py-0.5 rounded-full font-bold border bg-emerald-100 text-emerald-800 border-emerald-300";
-        badge.innerHTML = "✓ 3글자 규칙 준수";
-        submitBtn.disabled = false;
+      const val = input.value.trim();
+      const len = val.length;
+
+      if (len === 3) {
+        badge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold border bg-emerald-100 text-emerald-800 border-emerald-300';
+        badge.innerText = '✓ 3글자 규칙 준수';
       } else {
-        badge.className = "text-xs px-2.5 py-0.5 rounded-full font-bold border bg-rose-100 text-rose-800 border-rose-300";
-        badge.innerHTML = `${val.length}글자 (정확히 3글자 작성 필요)`;
-        submitBtn.disabled = true;
+        badge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold border bg-rose-100 text-rose-800 border-rose-300';
+        badge.innerText = `${len}글자 (정확히 3글자 작성 필요)`;
       }
-    }
+    };
 
-    function handleEditJongjang3Input() {
-      const val = document.getElementById('edit-jongjang3').value.trim();
-      const badge = document.getElementById('edit-jongjang3-badge');
-      const saveBtn = document.getElementById('edit-save-btn');
-
-      if (val.length === 3) {
-        badge.className = "text-xs font-medium text-emerald-700";
-        badge.innerText = "✓ 3글자 확인";
-        saveBtn.disabled = false;
-      } else {
-        badge.className = "text-xs font-medium text-rose-600";
-        badge.innerText = "✕ 3글자 필요";
-        saveBtn.disabled = true;
-      }
-    }
-
-    // Form Submission & Shared Firestore Storage
-    async function handleFormSubmit(e) {
-      e.preventDefault();
-
-      const author = document.getElementById('form-author').value.trim();
-      const themeTitle = document.getElementById('form-theme-title').value.trim();
-      const chojang = document.getElementById('form-chojang').value.trim();
-      const jungjang = document.getElementById('form-jungjang').value.trim();
-      const jongjang3 = document.getElementById('form-jongjang3').value.trim();
-      const jongjangRest = document.getElementById('form-jongjang-rest').value.trim();
-
-      if (jongjang3.length !== 3) {
-        showToast("종장 첫 마디는 반드시 3글자여야 합니다!", "rose");
-        return;
-      }
-
-      const submitBtn = document.getElementById('submit-btn');
-      const submitBtnText = document.getElementById('submit-btn-text');
-      submitBtn.disabled = true;
-      submitBtnText.innerText = "학급 갤러리 동기화 중...";
-
-      const newPost = {
-        themeId: selectedTheme.id,
-        themeTitle: themeTitle,
-        author: author,
-        chojang: chojang,
-        jungjang: jungjang,
-        jongjang3: jongjang3,
-        jongjangRest: jongjangRest,
-        likes: 0,
-        createdAt: new Date().toLocaleDateString('ko-KR'),
-        timestamp: Date.now()
-      };
-
-      try {
-        // Save to Shared Cloud DB (Firestore)
-        if (typeof window.addSijoToCloud === 'function') {
-          await window.addSijoToCloud(newPost);
-        }
-
-        // Generate HWP Document Download
-        downloadHwpDocument(newPost);
-
-        // Show Success Banner
-        document.getElementById('success-banner-msg').innerText = `[${author}] 학생의 작품이 학급 갤러리에 동기화되었으며, HWP 문서가 다운로드되었습니다.`;
-        document.getElementById('success-banner').classList.remove('hidden');
-
-        showToast("학급 갤러리 제출 및 HWP 다운로드 완료!", "emerald");
-
-        // Scroll to gallery
-        document.getElementById('class-gallery').scrollIntoView({ behavior: 'smooth' });
-
-      } catch (err) {
-        console.error(err);
-        showToast("제출 중 오류가 발생했습니다.", "rose");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtnText.innerText = "학급 갤러리 제출 및 HWP 저장";
-      }
-    }
-
-    function closeSuccessBanner() {
-      document.getElementById('success-banner').classList.add('hidden');
-    }
-
-    // HWP Generator
-    function downloadHwpDocument(post) {
-      const content = `====================================================
- [국어과 수행평가] 세상을 꼬집는 현대판 사설시조 창작 활동지
-====================================================
-
-■ 작성자 : ${post.author}
-■ 풍자 주제 : ${post.themeTitle}
-■ 작성일자 : ${post.createdAt}
-
-----------------------------------------------------
-[초장] (명분 및 시작 상황)
-${post.chojang}
-
-[중장] (현실 사설 및 열거)
-${post.jungjang}
-
-[종장] (반전 및 자기합리화)
-${post.jongjang3} ${post.jongjangRest}
-----------------------------------------------------
-
-■ 사설시조 구성 평가 체크리스트
- - [V] 초장: 시작 상황 제시 (평시조 격식)
- - [V] 중장: 현실의 모순에 대한 긴 사설 열거 (길이 연장)
- - [V] 종장: 첫 3글자 음보 규칙 준수 ("${post.jongjang3}")
-
-====================================================
-`;
-
-      const blob = new Blob([content], { type: 'application/x-hwp;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${post.author}_사설시조_${post.themeTitle.replace(/\s+/g, '_')}.hwp`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
-    // Render Gallery
-    window.renderFilterTabs = function() {
-      const container = document.getElementById('filter-tabs');
-      container.innerHTML = '';
-
-      const counts = { all: window.gallery.length };
-      THEMES.forEach(t => {
-        counts[t.id] = window.gallery.filter(p => p.themeId === t.id).length;
-      });
-
-      const allBtn = document.createElement('button');
-      allBtn.type = 'button';
-      allBtn.onclick = () => { activeFilter = 'all'; renderFilterTabs(); renderGallery(); };
-      allBtn.className = `px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-        activeFilter === 'all'
-          ? 'bg-amber-900 text-white shadow-2xs'
-          : 'bg-white text-stone-600 hover:bg-amber-100 border border-stone-200'
-      }`;
-      allBtn.innerText = `전체 보기 (${counts.all})`;
-      container.appendChild(allBtn);
-
-      THEMES.forEach(t => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.onclick = () => { activeFilter = t.id; renderFilterTabs(); renderGallery(); };
-        btn.className = `px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-          activeFilter === t.id
-            ? 'bg-amber-900 text-white shadow-2xs'
-            : 'bg-white text-stone-600 hover:bg-amber-100 border border-stone-200'
-        }`;
-        btn.innerText = `${t.title} (${counts[t.id] || 0})`;
-        container.appendChild(btn);
-      });
-    }
-
-    window.renderGallery = function() {
-      const container = document.getElementById('gallery-grid');
-      container.innerHTML = '';
-
-      const filtered = activeFilter === 'all'
-        ? window.gallery
-        : window.gallery.filter(p => p.themeId === activeFilter);
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-1 md:col-span-2 text-center py-12 bg-white/60 rounded-3xl border border-dashed border-stone-300">
-            <i data-lucide="feather" class="w-8 h-8 text-stone-400 mx-auto mb-2"></i>
-            <p class="text-sm font-semibold text-stone-600">등록된 사설시조 작품이 없습니다.</p>
-            <p class="text-xs text-stone-400 mt-0.5">위 양식에서 학급 첫 번째 작품을 제출해 보세요!</p>
-          </div>
-        `;
-        lucide.createIcons();
-        return;
-      }
-
-      filtered.forEach(post => {
-        const themeObj = THEMES.find(t => t.id === post.themeId) || THEMES[0];
-
-        const card = document.createElement('div');
-        card.className = "bg-white/90 rounded-3xl p-5 border border-amber-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative group";
-
-        card.innerHTML = `
-          <div class="space-y-3">
-            <div class="flex items-center justify-between border-b border-stone-100 pb-2.5">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${themeObj.badge}">
-                  ${post.themeTitle}
-                </span>
-                <span class="text-xs font-bold text-stone-800">${post.author}</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <span class="text-[11px] text-stone-400 font-mono mr-1">${post.createdAt}</span>
-                <button onclick="downloadHwpDocumentById('${post.id}')" title="HWP 재다운로드" class="p-1 text-stone-400 hover:text-amber-800 rounded-md hover:bg-amber-50 cursor-pointer">
-                  <i data-lucide="file-text" class="w-4 h-4"></i>
-                </button>
-                <button onclick="openEditModal('${post.id}')" title="작품 수정" class="p-1 text-stone-400 hover:text-amber-800 rounded-md hover:bg-amber-50 cursor-pointer">
-                  <i data-lucide="edit-3" class="w-4 h-4"></i>
-                </button>
-                <button onclick="openDeleteModal('${post.id}')" title="작품 삭제" class="p-1 text-stone-400 hover:text-rose-600 rounded-md hover:bg-rose-50 cursor-pointer">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Poem Content Box -->
-            <div class="space-y-2 p-3.5 bg-[#FAF7F2] rounded-2xl border border-amber-200/60 font-serif-kr text-xs md:text-sm leading-relaxed text-stone-800">
-              <p><span class="text-[10px] font-bold text-amber-800 font-sans mr-1">[초장]</span>${post.chojang}</p>
-              <p><span class="text-[10px] font-bold text-amber-800 font-sans mr-1">[중장]</span>${post.jungjang}</p>
-              <p>
-                <span class="text-[10px] font-bold text-amber-800 font-sans mr-1">[종장]</span>
-                <strong class="text-amber-900 bg-amber-200/60 px-1 py-0.5 rounded font-bold">${post.jongjang3}</strong> ${post.jongjangRest}
-              </p>
-            </div>
-          </div>
-
-          <div class="pt-1 flex items-center justify-between text-xs border-t border-stone-100">
-            <button onclick="toggleLike('${post.id}')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold transition-all cursor-pointer">
-              <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500 fill-rose-500"></i>
-              <span>공감 (좋아요) ${post.likes || 0}</span>
-            </button>
-            <span class="text-[11px] text-stone-400 font-sans">실시간 학급 공유됨</span>
-          </div>
-        `;
-
-        container.appendChild(card);
-      });
-
-      lucide.createIcons();
-    }
-
-    // Interactive Actions
-    window.downloadHwpDocumentById = function(postId) {
-      const post = window.gallery.find(p => p.id === postId);
-      if (post) downloadHwpDocument(post);
-    }
-
-    window.toggleLike = async function(postId) {
-      const post = window.gallery.find(p => p.id === postId);
-      if (!post) return;
-
-      const newLikes = (post.likes || 0) + 1;
-      if (typeof window.updateSijoInCloud === 'function') {
-        await window.updateSijoInCloud(postId, { likes: newLikes });
-        showToast("작품에 공감했습니다!", "amber");
-      }
-    }
-
-    // Delete Modal Logic
-    window.openDeleteModal = function(postId) {
-      deletingId = postId;
-      document.getElementById('delete-modal').classList.remove('hidden');
-    }
-
-    window.closeDeleteModal = function() {
-      deletingId = null;
-      document.getElementById('delete-modal').classList.add('hidden');
-    }
-
-    window.confirmDeletePost = async function() {
-      if (!deletingId) return;
-
-      if (typeof window.deleteSijoFromCloud === 'function') {
-        await window.deleteSijoFromCloud(deletingId);
-        showToast("작품이 학급 갤러리에서 삭제되었습니다.", "stone");
-      }
-      closeDeleteModal();
-    }
-
-    // Edit Modal Logic
-    window.openEditModal = function(postId) {
-      const post = window.gallery.find(p => p.id === postId);
-      if (!post) return;
-
-      editingPost = post;
-      document.getElementById('edit-theme-title').value = post.themeTitle;
-      document.getElementById('edit-author').value = post.author;
-      document.getElementById('edit-chojang').value = post.chojang;
-      document.getElementById('edit-jungjang').value = post.jungjang;
-      document.getElementById('edit-jongjang3').value = post.jongjang3;
-      document.getElementById('edit-jongjang-rest').value = post.jongjangRest;
-
-      handleEditJongjang3Input();
-      document.getElementById('edit-modal').classList.remove('hidden');
-    }
-
-    window.closeEditModal = function() {
-      editingPost = null;
-      document.getElementById('edit-modal').classList.add('hidden');
-    }
-
-    window.handleSaveEdit = async function(e) {
-      e.preventDefault();
-      if (!editingPost) return;
-
-      const jong3 = document.getElementById('edit-jongjang3').value.trim();
-      if (jong3.length !== 3) {
-        showToast("종장 첫 마디는 3글자여야 합니다!", "rose");
-        return;
-      }
-
-      const updated = {
-        themeTitle: document.getElementById('edit-theme-title').value.trim(),
-        author: document.getElementById('edit-author').value.trim(),
-        chojang: document.getElementById('edit-chojang').value.trim(),
-        jungjang: document.getElementById('edit-jungjang').value.trim(),
-        jongjang3: jong3,
-        jongjangRest: document.getElementById('edit-jongjang-rest').value.trim()
-      };
-
-      if (typeof window.updateSijoInCloud === 'function') {
-        await window.updateSijoInCloud(editingPost.id, updated);
-        showToast("작품 수정이 실시간 저장되었습니다.", "emerald");
-      }
-      closeEditModal();
-    }
-
-    // Video Player Modal Logic
+    // Video Section Renderer
     function renderVideoCards() {
       const container = document.getElementById('video-cards-grid');
+      if (!container) return;
       container.innerHTML = '';
 
       SATIRE_VIDEOS.forEach(v => {
         const card = document.createElement('div');
-        card.className = "bg-white rounded-2xl p-4 border border-amber-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between space-y-3";
-
+        card.className = 'bg-stone-50 rounded-2xl p-4 border border-stone-200 flex flex-col justify-between space-y-3';
         card.innerHTML = `
           <div class="space-y-2">
-            <div class="aspect-video bg-stone-100 rounded-xl overflow-hidden relative group cursor-pointer" onclick="openVideoModal('${v.embedId}', '${v.title}')">
-              <img src="https://img.youtube.com/vi/${v.embedId}/hqdefault.jpg" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-              <div class="absolute inset-0 bg-stone-900/30 group-hover:bg-stone-900/10 transition-colors flex items-center justify-center">
-                <div class="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-amber-900 shadow-md">
-                  <i data-lucide="play" class="w-5 h-5 ml-0.5 fill-amber-900"></i>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${v.badgeColor}">${v.tag}</span>
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full border ${v.badgeColor}">
+                ${v.tag}
+              </span>
               <span class="text-[11px] text-stone-500">${v.channel}</span>
             </div>
-            <h4 class="text-xs font-bold text-stone-900 line-clamp-2">${v.title}</h4>
-            <p class="text-[11px] text-stone-600 line-clamp-2 leading-relaxed">${v.description}</p>
+            <h3 class="text-sm font-bold font-serif-kr text-stone-900 leading-snug">
+              ${v.title}
+            </h3>
+            <p class="text-xs text-stone-600 leading-relaxed">
+              ${v.description}
+            </p>
           </div>
-          <button onclick="openVideoModal('${v.embedId}', '${v.title}')" class="w-full py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1">
-            <i data-lucide="play-circle" class="w-3.5 h-3.5"></i>
-            <span>강의 시청하기</span>
+          <button
+            onclick="openVideoModal('${v.embedId}', '${v.title}')"
+            class="w-full py-2 px-3 rounded-xl bg-amber-900 hover:bg-amber-950 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+            <span>영상 시청하기</span>
           </button>
         `;
         container.appendChild(card);
       });
-      lucide.createIcons();
     }
+
+    // Modal Handlers
+    window.openGuideModal = function() {
+      document.getElementById('guide-modal').classList.remove('hidden');
+    };
+    window.closeGuideModal = function() {
+      document.getElementById('guide-modal').classList.add('hidden');
+    };
 
     window.openVideoModal = function(embedId, title) {
-      document.getElementById('video-modal-title').innerText = `🎬 ${title}`;
+      document.getElementById('video-modal-title').innerText = title;
       document.getElementById('video-modal-iframe').src = `https://www.youtube.com/embed/${embedId}?autoplay=1`;
       document.getElementById('video-modal').classList.remove('hidden');
-    }
-
+    };
     window.closeVideoModal = function() {
       document.getElementById('video-modal-iframe').src = '';
       document.getElementById('video-modal').classList.add('hidden');
-    }
-
-    // Guide Modal
-    window.openGuideModal = function() {
-      document.getElementById('guide-modal').classList.remove('hidden');
-    }
-
-    window.closeGuideModal = function() {
-      document.getElementById('guide-modal').classList.add('hidden');
-    }
-
-    // Toast Notification System
-    function showToast(msg, color = 'emerald') {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-
-      const colorMap = {
-        emerald: 'bg-emerald-900 text-emerald-50 border-emerald-700',
-        amber: 'bg-amber-900 text-amber-50 border-amber-700',
-        rose: 'bg-rose-900 text-rose-50 border-rose-700',
-        stone: 'bg-stone-800 text-stone-50 border-stone-700'
-      };
-
-      toast.className = `px-4 py-3 rounded-2xl text-xs font-bold shadow-xl border transition-all transform translate-y-2 opacity-0 flex items-center gap-2 pointer-events-auto ${colorMap[color] || colorMap.emerald}`;
-      toast.innerHTML = `
-        <i data-lucide="info" class="w-4 h-4"></i>
-        <span>${msg}</span>
-      `;
-
-      container.appendChild(toast);
-      lucide.createIcons();
-
-      setTimeout(() => {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-      }, 10);
-
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-2');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    // Run Initialization
-    window.onload = initApp;
+    };
   </script>
 </body>
 </html>
